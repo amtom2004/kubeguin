@@ -1,0 +1,19 @@
+# Local .terraform directory (contains binaries and modules)
+**/.terraform/*
+
+# .tfstate files (contains sensitive data and should be managed via remote backend)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Exclude override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include tool-specific files
+.terraform.lock.hcl

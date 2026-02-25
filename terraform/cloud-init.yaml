@@ -1,0 +1,10 @@
+runcmd:
+    -   curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode 644" sh -
+    -   until kubectl get nodes | grep -q "Ready"; do sleep 2; done
+    -   kubectl create namespace argocd
+    -   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    -   until kubectl -n argocd get pods | grep argocd-server | grep -q "Running"; do sleep 5; done
+    -   kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"NodePort", "ports":[{"port":443,"targetPort":8080,"nodePort":30443}]}}'
+    -   echo "YXBpVmVyc2lvbjogYXJnb3Byb2ouaW8vdjFhbHBoYTEKa2luZDogQXBwbGljYXRpb24KbWV0YWRhdGE6CiAgICBuYW1lOiBrdWJlZ3VpbgogICAgbmFtZXNwYWNlOiBhcmdvY2QKc3BlYzoKICAgIHByb2plY3Q6IGRlZmF1bHQKICAgIHNvdXJjZToKICAgICAgICByZXBvVVJMOiBodHRwczovL2dpdGh1Yi5jb20vYW10b20yMDA0L2t1YmVndWluLmdpdAogICAgICAgIHRhcmdldFJldmlzaW9uOiBtYWluCiAgICAgICAgcGF0aDogazhzCiAgICBkZXN0aW5hdGlvbjoKICAgICAgICBzZXJ2ZXI6IGh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2YwogICAgICAgIG5hbWVzcGFjZTogZGVmYXVsdAogICAgc3luY1BvbGljeToKICAgICAgICBhdXRvbWF0ZWQ6CiAgICAgICAgICAgIHBydW5lOiB0cnVlCiAgICAgICAgICAgIHNlbGZIZWFsOiB0cnVlCiAgICAgICAgc3luY09wdGlvbnM6CiAgICAgICAgICAgIC0gICBDcmVhdGVOYW1lc3BhY2U9dHJ1ZQo=" | base64 -d > /home/ubuntu/kubeguin.yaml
+    -   sleep 30
+    -   kubectl apply -f /home/ubuntu/kubeguin.yaml
